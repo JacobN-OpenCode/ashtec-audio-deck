@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <title>AshTec Audio Deck (demo)</title>
+    <link rel="stylesheet" href="../src/styles.css">
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-cat">🐱</span>
+          <div>
+            <h1>AshTec Audio Deck</h1>
+            <p class="tagline">queue it · pick your speakers · press start</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <label class="autoplay on">
+            <input type="checkbox" id="autoplay">
+            <span>Auto-play next</span>
+          </label>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel queue-panel">
+          <div class="panel-head">
+            <h2>Queue</h2>
+            <button id="add-files" class="btn btn-tan">＋ Add audio files</button>
+          </div>
+          <div id="queue-empty" class="empty" style="display: none;">
+            No audio yet.<br>
+            <span class="empty-hint">Click <b>＋ Add audio files</b> or drag files in here.</span>
+          </div>
+          <ul id="queue" class="queue"><li class="row" draggable="true" data-id="1"><input class="row-pos" type="number" min="1" max="999" title="Position in queue"><div class="row-main"><input class="row-name" title="Click to rename"><div class="row-path" title="/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/hsm-opening.wav">/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/hsm-opening.wav</div></div><div class="row-actions"><button class="btn btn-mini btn-amber" title="Play from here">▶</button><button class="btn btn-mini danger" title="Remove">✕</button></div></li><li class="row current" draggable="true" data-id="2"><input class="row-pos" type="number" min="1" max="999" title="Position in queue"><div class="row-main"><input class="row-name" title="Click to rename"><div class="row-path" title="/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/interval-music.wav">/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/interval-music.wav</div></div><div class="row-actions"><button class="btn btn-mini btn-amber" title="Play from here">▶</button><button class="btn btn-mini danger" title="Remove">✕</button></div></li><li class="row" draggable="true" data-id="3"><input class="row-pos" type="number" min="1" max="999" title="Position in queue"><div class="row-main"><input class="row-name" title="Click to rename"><div class="row-path" title="/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/finale-bows.wav">/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/finale-bows.wav</div></div><div class="row-actions"><button class="btn btn-mini btn-amber" title="Play from here">▶</button><button class="btn btn-mini danger" title="Remove">✕</button></div></li><li class="row" draggable="true" data-id="4"><input class="row-pos" type="number" min="1" max="999" title="Position in queue"><div class="row-main"><input class="row-name" title="Click to rename"><div class="row-path" title="/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/interval-music.wav">/Users/jacobnavaratne/ashtec-audio-deck/demo/audio/interval-music.wav</div></div><div class="row-actions"><button class="btn btn-mini btn-amber" title="Play from here">▶</button><button class="btn btn-mini danger" title="Remove">✕</button></div></li></ul>
+        </section>
+
+        <section class="deck">
+          <div class="panel now-panel">
+            <div class="panel-head"><h2>Now</h2></div>
+            <div id="now-title" class="now-title">Interval Music (playlist 03)</div>
+            <div id="now-sub" class="now-sub">Playing · /Users/jacobnavaratne/ashtec-audio-deck/demo/audio/interval-music.wav</div>
+            <div class="progress"><div id="progress-bar" class="progress-bar" style="width: 42%;"></div></div>
+            <div class="times"><span id="time-now">1:24</span><span id="time-total">3:20</span></div>
+            <div class="controls">
+              <button id="btn-start" class="btn btn-big btn-amber">⏸ Pause</button>
+              <button id="btn-skip" class="btn btn-big btn-ghost">⏭ Skip</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Speakers</h2></div>
+            <div id="speakers" class="speakers"><label class="speaker"><input type="checkbox"><span>Default output<span class="dev-sub"> (whatever Windows is set to)</span></span></label><label class="speaker"><input type="checkbox"><span>Realtek Speakers (Front of House)<span class="dev-sub"></span></span></label><label class="speaker"><input type="checkbox"><span>USB Audio Device (Stage Monitor)<span class="dev-sub"></span></span></label><label class="speaker"><input type="checkbox"><span>HDMI / DisplayPort (Projector)<span class="dev-sub"></span></span></label></div>
+            <p class="hint">Tick every output you want to play through. Changes apply straight away.</p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Configs</h2></div>
+            <div class="save-row">
+              <input id="config-name" type="text" placeholder="Config name, e.g. HSM Opening" maxlength="60">
+              <button id="btn-save" class="btn btn-tan">Save</button>
+            </div>
+            <ul id="configs" class="configs"><li><span>HSM Opening</span><span class="cfg-actions"><button class="btn btn-mini btn-amber">Load</button><button class="btn btn-mini danger">Delete</button></span></li><li><span>Interval Music</span><span class="cfg-actions"><button class="btn btn-mini btn-amber">Load</button><button class="btn btn-mini danger">Delete</button></span></li><li><span>Finale - Full Show</span><span class="cfg-actions"><button class="btn btn-mini btn-amber">Load</button><button class="btn btn-mini danger">Delete</button></span></li></ul>
+            <p class="hint">Configs (queue + speakers + settings) are saved in <code>%APPDATA%\AshTec Audio Deck\configs</code>.</p>
+          </div>
+        </section>
+      </main>
+
+      <div id="toast" class="toast">Auto-play next: ON</div>
+    </div>
+    <script src="demo-stub.js"></script>
+    <script src="../src/renderer.js"></script>
+  
+
+</body></html>

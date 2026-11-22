@@ -10,7 +10,7 @@
   "scripts": {
     "start": "electron .",
     "smoke": "electron . --smoke",
-    "dist": "electron-builder --win"
+    "dist": "electron-builder"
   },
   "devDependencies": {
     "electron": "^37.2.0",
@@ -35,6 +35,20 @@
     },
     "portable": {
       "artifactName": "AshTec-Audio-Deck-${version}.exe"
+    },
+    "mac": {
+      "icon": "build/icon.icns",
+      "category": "public.app-category.music",
+      "identity": null,
+      "target": [{ "target": "dmg", "arch": ["universal"] }]
+    },
+    "dmg": {
+      "artifactName": "AshTec-Audio-Deck-${version}.dmg",
+      "title": "AshTec Audio Deck",
+      "contents": [
+        { "x": 180, "y": 170 },
+        { "x": 480, "y": 170, "type": "link", "path": "/Applications" }
+      ]
     }
   }
 }

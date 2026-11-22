@@ -1,4 +1,4 @@
-name: Build Windows release
+name: Build releases
 
 on:
   push:
@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-windows:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
@@ -20,22 +20,28 @@ jobs:
       - name: Install dependencies
         run: npm install --no-audit --no-fund
 
-      - name: Build Windows installers
-        run: npm run dist
+      - name: Build Windows one-file .exe
+        run: npm run dist -- --win
 
-      - name: Attach installers to the release
+      - name: Attach Windows exe to the release
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            dist/*.exe
+          files: dist/*.exe
           body: |
-            ## 🐱 Install (dead simple)
+            ## 🐱 Install
 
+            ### Windows
             1. Download **`AshTec-Audio-Deck-*.exe`** below.
             2. Double-click it. That's it — one file, no installer, nothing else to do.
 
             Windows 10/11 (64-bit). Runs from anywhere (USB stick fine).
             If SmartScreen complains: **More info → Run anyway**.
+
+            ### macOS
+            1. Download **`AshTec-Audio-Deck-*.dmg`** below.
+            2. Open it and **drag the app onto Applications**.
+            3. First time: **right-click the app → Open → Open** (it's unsigned,
+               so macOS asks once).
 
             ---
 
@@ -44,6 +50,29 @@ jobs:
             position in the queue, pick which speakers they come out of, then
             **Start**, **Skip**, and flip on **Auto-play next**. Save your whole
             setup as a config (queue + speakers + settings) and reload it for the
-            next show. Configs live in `%APPDATA%\AshTec Audio Deck\configs`.
+            next show. Configs live in `%APPDATA%\AshTec Audio Deck\configs`
+            (Windows) or `~/Library/Application Support/AshTec Audio Deck/configs`
+            (macOS).
 
             Themed from [ashtec.dino.icu](https://ashtec.dino.icu/).
+
+  build-macos:
+    needs: build-windows
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Build macOS dmg (universal)
+        run: npm run dist -- --mac
+
+      - name: Attach dmg to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.dmg

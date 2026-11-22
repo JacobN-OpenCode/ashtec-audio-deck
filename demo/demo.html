@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- Demo harness: the real AshTec Audio Deck UI, stubbed to run outside Electron for screenshots. -->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AshTec Audio Deck (demo)</title>
+    <link rel="stylesheet" href="../src/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-cat">🐱</span>
+          <div>
+            <h1>AshTec Audio Deck</h1>
+            <p class="tagline">queue it · pick your speakers · press start</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <label class="autoplay">
+            <input type="checkbox" id="autoplay" />
+            <span>Auto-play next</span>
+          </label>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel queue-panel">
+          <div class="panel-head">
+            <h2>Queue</h2>
+            <button id="add-files" class="btn btn-tan">＋ Add audio files</button>
+          </div>
+          <div id="queue-empty" class="empty">
+            No audio yet.<br />
+            <span class="empty-hint">Click <b>＋ Add audio files</b> or drag files in here.</span>
+          </div>
+          <ul id="queue" class="queue"></ul>
+        </section>
+
+        <section class="deck">
+          <div class="panel now-panel">
+            <div class="panel-head"><h2>Now</h2></div>
+            <div id="now-title" class="now-title">Nothing loaded</div>
+            <div id="now-sub" class="now-sub">Add files and press Start</div>
+            <div class="progress"><div id="progress-bar" class="progress-bar"></div></div>
+            <div class="times"><span id="time-now">0:00</span><span id="time-total">0:00</span></div>
+            <div class="controls">
+              <button id="btn-start" class="btn btn-big btn-amber">▶ Start</button>
+              <button id="btn-skip" class="btn btn-big btn-ghost">⏭ Skip</button>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Speakers</h2></div>
+            <div id="speakers" class="speakers"><div class="empty-hint">Looking for output devices…</div></div>
+            <p class="hint">Tick every output you want to play through. Changes apply straight away.</p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Configs</h2></div>
+            <div class="save-row">
+              <input id="config-name" type="text" placeholder="Config name, e.g. HSM Opening" maxlength="60" />
+              <button id="btn-save" class="btn btn-tan">Save</button>
+            </div>
+            <ul id="configs" class="configs"></ul>
+            <p class="hint">Configs (queue + speakers + settings) are saved in <code>%APPDATA%\AshTec Audio Deck\configs</code>.</p>
+          </div>
+        </section>
+      </main>
+
+      <div id="toast" class="toast" hidden></div>
+    </div>
+    <script src="demo-stub.js"></script>
+    <script src="../src/renderer.js"></script>
+  </body>
+</html>
