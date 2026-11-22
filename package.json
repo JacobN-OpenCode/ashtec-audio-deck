@@ -1,0 +1,51 @@
+{
+  "name": "ashtec-audio-deck",
+  "productName": "AshTec Audio Deck",
+  "version": "1.0.0",
+  "description": "A simple audio playback deck for AshTec shows: queue audio files, pick your speakers, press start.",
+  "main": "electron/main.js",
+  "author": "Jacob N (AshTec Crew)",
+  "license": "MIT",
+  "homepage": "https://github.com/JacobN-OpenCode/ashtec-audio-deck",
+  "scripts": {
+    "start": "electron .",
+    "smoke": "electron . --smoke",
+    "dist": "electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "uk.navaratne.ashtec.audiodeck",
+    "productName": "AshTec Audio Deck",
+    "copyright": "© AshTec Crew",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "electron/**/*",
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "portable", "arch": ["x64"] }
+      ]
+    },
+    "nsis": {
+      "oneClick": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "AshTec Audio Deck",
+      "artifactName": "AshTec-Audio-Deck-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "AshTec-Audio-Deck-Portable-${version}.exe"
+    }
+  }
+}
