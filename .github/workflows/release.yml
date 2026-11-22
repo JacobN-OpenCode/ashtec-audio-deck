@@ -28,3 +28,22 @@ jobs:
         with:
           files: |
             dist/*.exe
+          body: |
+            ## 🐱 Install (dead simple)
+
+            1. Download **`AshTec-Audio-Deck-*.exe`** below.
+            2. Double-click it. That's it — one file, no installer, nothing else to do.
+
+            Windows 10/11 (64-bit). Runs from anywhere (USB stick fine).
+            If SmartScreen complains: **More info → Run anyway**.
+
+            ---
+
+            ### What it does
+            Queue audio files from your computer, give each one a name and a
+            position in the queue, pick which speakers they come out of, then
+            **Start**, **Skip**, and flip on **Auto-play next**. Save your whole
+            setup as a config (queue + speakers + settings) and reload it for the
+            next show. Configs live in `%APPDATA%\AshTec Audio Deck\configs`.
+
+            Themed from [ashtec.dino.icu](https://ashtec.dino.icu/).

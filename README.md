@@ -10,22 +10,12 @@ Themed from [ashtec.dino.icu](https://ashtec.dino.icu/).
 
 ## Install (dead simple)
 
-**Option A — install it (recommended)**
-
 1. Go to **[Releases](../../releases)** and download
-   `AshTec-Audio-Deck-Setup-1.0.0.exe`
-2. Double-click it → **Install** → done.
-3. Open **AshTec Audio Deck** from your Desktop or Start Menu.
+   **`AshTec-Audio-Deck-1.0.0.exe`**
+2. Double-click it. That's it — one file, no installer, nothing else to do.
 
-**Option B — no install at all**
-
-1. Download `AshTec-Audio-Deck-Portable-1.0.0.exe` from
-   **[Releases](../../releases)**.
-2. Double-click it. That's the whole app, nothing to install.
-   (Good for running it off a USB stick on the show laptop.)
-
-> Windows 10/11 (64-bit). If SmartScreen complains, click
-> **More info → Run anyway** (it's a free/community app, unsigned).
+> Windows 10/11 (64-bit). It runs from wherever you keep it (USB stick fine).
+> If SmartScreen complains, click **More info → Run anyway** (unsigned free app).
 
 ---
 
@@ -64,7 +54,7 @@ npm start        # run in dev
 npm run dist     # build the Windows installers into dist/
 ```
 
-Pushing a tag like `v1.0.1` triggers the GitHub Action that builds the Windows
-installers and attaches them to the release automatically.
+Pushing a tag like `v1.0.1` triggers the GitHub Action that builds the
+single-file Windows `.exe` and attaches it to the release automatically.
 
 MIT licensed. Made for the AshTec crew. 🎭

@@ -31,21 +31,10 @@
     ],
     "win": {
       "icon": "build/icon.ico",
-      "target": [
-        { "target": "nsis", "arch": ["x64"] },
-        { "target": "portable", "arch": ["x64"] }
-      ]
-    },
-    "nsis": {
-      "oneClick": true,
-      "perMachine": false,
-      "createDesktopShortcut": true,
-      "createStartMenuShortcut": true,
-      "shortcutName": "AshTec Audio Deck",
-      "artifactName": "AshTec-Audio-Deck-Setup-${version}.exe"
+      "target": [{ "target": "portable", "arch": ["x64"] }]
     },
     "portable": {
-      "artifactName": "AshTec-Audio-Deck-Portable-${version}.exe"
+      "artifactName": "AshTec-Audio-Deck-${version}.exe"
     }
   }
 }
