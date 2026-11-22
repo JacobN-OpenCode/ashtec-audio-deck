@@ -21,7 +21,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Build Windows one-file .exe
-        run: npm run dist -- --win
+        run: npm run dist -- --win --publish never
 
       - name: Attach Windows exe to the release
         uses: softprops/action-gh-release@v2
@@ -70,7 +70,7 @@ jobs:
         run: npm install --no-audit --no-fund
 
       - name: Build macOS dmg (universal)
-        run: npm run dist -- --mac
+        run: npm run dist -- --mac --publish never
 
       - name: Attach dmg to the release
         uses: softprops/action-gh-release@v2
