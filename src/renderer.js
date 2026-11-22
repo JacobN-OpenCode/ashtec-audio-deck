@@ -17,6 +17,112 @@ let audios = []     // one <audio> per selected speaker; audios[0] is the master
 let rafId = null
 let toastTimer = null
 
+// ---------- CrewHub link ----------
+const HUB_URL = 'https://ashtec.dino.icu'
+const DECK_TOKEN = 'ashtec-deck'     // must match the hub's AUDIO_DECK_TOKEN
+const APP_VERSION = '1.3.0'          // keep in sync with package.json
+const POLL_MS = 3000
+
+// ---------- audio updates feed ----------
+let events = []                 // {seq, message, ts}
+let eventSeq = 0
+let lastAckedSeq = 0
+let respondedRequestIds = new Set()
+let currentRequestId = null
+
+function pushEvent(message) {
+  eventSeq++
+  events.push({ seq: eventSeq, message, ts: Date.now() })
+  if (events.length > 60) events = events.slice(-60)
+  renderUpdates()
+}
+
+function renderUpdates() {
+  const ul = $('updates')
+  if (!ul) return
+  ul.innerHTML = ''
+  if (!events.length) {
+    ul.innerHTML = '<li class="none">Nothing yet this session.</li>'
+    return
+  }
+  for (const e of [...events].reverse()) {
+    const li = document.createElement('li')
+    const t = document.createElement('span')
+    t.className = 'upd-time'
+    t.textContent = new Date(e.ts).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    const m = document.createElement('span')
+    m.className = 'upd-msg'
+    m.textContent = e.message
+    li.append(t, m)
+    ul.append(li)
+  }
+}
+
+// ---------- hub polling (status out, control requests + commands in) ----------
+async function pollHub() {
+  let data
+  try {
+    const res = await fetch(HUB_URL + '/api/deckStatus', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token: DECK_TOKEN,
+        status: {
+          playing: state.playing,
+          trackName: currentTrack() ? currentTrack().name : null,
+          queueCount: state.queue.length,
+          autoPlay: state.autoPlay,
+          appVersion: APP_VERSION,
+        },
+        events: events.filter((e) => e.seq > lastAckedSeq),
+      }),
+    })
+    if (!res.ok) return
+    data = await res.json()
+  } catch (_) {
+    return // hub offline / not deployed yet - the deck works fine alone
+  }
+  if (typeof data.lastSeq === 'number') lastAckedSeq = Math.max(lastAckedSeq, data.lastSeq)
+  handleControlRequests(data.requests || [])
+  handleCommands(data.commands || [])
+}
+
+function handleControlRequests(requests) {
+  const pending = requests.find((r) => !respondedRequestIds.has(r.id))
+  if (!pending) {
+    $('control-req').hidden = true
+    currentRequestId = null
+    return
+  }
+  currentRequestId = pending.id
+  $('control-msg').textContent = '🎛 ' + (pending.requestedBy || 'An admin') + ' requests control of the deck'
+  $('control-req').hidden = false
+}
+
+async function respondControl(approved) {
+  if (!currentRequestId) return
+  const id = currentRequestId
+  respondedRequestIds.add(id)
+  currentRequestId = null
+  $('control-req').hidden = true
+  pushEvent(approved ? 'Admin control approved (2 minutes)' : 'Admin control denied')
+  try {
+    await fetch(HUB_URL + '/api/deckControlRespond', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: DECK_TOKEN, requestId: id, approved }),
+    })
+  } catch (_) {}
+}
+
+async function handleCommands(commands) {
+  for (const c of commands) {
+    if (c.action === 'play' && !state.playing) await toggleStart()
+    else if (c.action === 'pause' && state.playing) pauseAll()
+    else if (c.action === 'skip') await nextTrack(state.playing)
+  }
+}
+
 // ---------- helpers ----------
 function toast(msg) {
   const el = $('toast')
@@ -158,13 +264,15 @@ async function startTrack(id, autoplay) {
   await buildAudios(false)
   renderQueue()
   renderDeck()
+  const t = currentTrack()
+  if (t) pushEvent(`${autoplay ? 'Started' : 'Loaded'}: ${t.name}`)
   if (autoplay) await playAll()
   autosave()
 }
 
 async function toggleStart() {
   if (!state.queue.length) { toast('Add some audio first'); return }
-  if (state.playing) { pauseAll(); return }
+  if (state.playing) { pushEvent('Paused'); pauseAll(); return }
   if (!currentTrack()) {
     const first = sortedQueue()[0]
     if (first) await startTrack(first.id, true)
@@ -184,6 +292,7 @@ async function nextTrack(autoplay) {
     renderDeck()
     renderProgress()
     toast('End of queue')
+    pushEvent('End of queue')
     return
   }
   await startTrack(next.id, autoplay)
@@ -370,6 +479,7 @@ async function refreshConfigs() {
       if (!data) { toast('Could not load that config'); return }
       await applyConfig(data)
       toast(`Loaded "${n}"`)
+      pushEvent(`Loaded config "${n}"`)
     })
     const del = document.createElement('button')
     del.className = 'btn btn-mini danger'
@@ -417,6 +527,7 @@ async function addPaths(paths) {
     await buildAudios(false)
     renderQueue(); renderDeck(); autosave()
     toast(`Added ${added} file${added > 1 ? 's' : ''}`)
+    pushEvent(`Added ${added} file${added > 1 ? 's' : ''} to the queue`)
   } else if (paths.length) {
     toast('Already in the queue')
   }
@@ -445,6 +556,7 @@ $('btn-save').addEventListener('click', async () => {
   $('config-name').value = ''
   refreshConfigs()
   toast(`Saved "${saved}"`)
+  pushEvent(`Saved config "${saved}"`)
 })
 
 // drag & drop files from Explorer
@@ -453,6 +565,14 @@ document.body.addEventListener('drop', (e) => {
   const files = Array.from(e.dataTransfer.files || [])
   const paths = files.map((f) => window.deck.pathForFile(f)).filter(Boolean)
   if (paths.length) addPaths(paths)
+})
+
+$('control-approve').addEventListener('click', () => respondControl(true))
+$('control-deny').addEventListener('click', () => respondControl(false))
+
+$('open-hub').addEventListener('click', () => {
+  window.deck.openExternal(HUB_URL + '/')
+  pushEvent('Opened the CrewHub')
 })
 
 // ---------- boot ----------
@@ -468,6 +588,11 @@ document.body.addEventListener('drop', (e) => {
   await refreshDevices()
   await buildAudios(false)
   renderQueue(); renderDeck(); refreshConfigs()
+  renderUpdates()
+  pushEvent('Deck ready')
+  // talk to the CrewHub: status + updates out, admin control requests + commands in
+  void pollHub()
+  setInterval(pollHub, POLL_MS)
   // pick up newly plugged-in speakers
   navigator.mediaDevices.addEventListener('devicechange', refreshDevices)
 })()

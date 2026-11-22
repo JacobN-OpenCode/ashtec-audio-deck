@@ -13,6 +13,7 @@
 
   window.deck = {
     pathForFile: () => '',
+    openExternal: async () => true,
     pickAudioFiles: async () => [],
     listConfigs: async () => (mode === 'empty' ? [] : ['HSM Opening', 'Interval Music', 'Finale - Full Show']),
     saveConfig: async (n) => n,

@@ -141,3 +141,12 @@ ipcMain.handle('autosave-load', () => {
   } catch (_) {}
   return null
 })
+
+ipcMain.handle('open-external', (_e, url) => {
+  // Only the CrewHub origin is allowed out of the renderer.
+  if (typeof url === 'string' && url.startsWith('https://ashtec.dino.icu')) {
+    shell.openExternal(url)
+    return true
+  }
+  return false
+})

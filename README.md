@@ -54,6 +54,17 @@ Configs live at:
 
 Your last session is also autosaved, so reopening the app puts everything back.
 
+## CrewHub link & temporary control
+
+The **🌐 CrewHub** button opens [ashtec.dino.icu](https://ashtec.dino.icu/), and
+the deck shares an **Audio updates** feed with the CrewHub admin *Audio Deck*
+tab (starts, skips, config loads, approvals).
+
+Admins on the hub can click **Request control**: the request pops up on the deck
+laptop, and when the operator clicks **Approve** the admin gets Play / Pause /
+Skip for **2 minutes**. Deny it and nothing happens. The deck works fully
+offline — the hub link and control just go quiet until it's reachable.
+
 ---
 
 ## Building it yourself

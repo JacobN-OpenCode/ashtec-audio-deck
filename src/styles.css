@@ -285,6 +285,46 @@ html, body {
   z-index: 50;
 }
 
+/* ---------- control request banner ---------- */
+.control-req {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  background: #2e2417;
+  border: 2px solid var(--amber);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--ink);
+  box-shadow: 2px 2px 0 rgba(245, 158, 11, 0.35);
+}
+.control-actions { display: flex; gap: 6px; }
+
+/* ---------- audio updates feed ---------- */
+.updates { list-style: none; margin: 0; padding: 0; }
+.updates li {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  padding: 5px 2px;
+  border-bottom: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--ink);
+}
+.updates li:last-child { border-bottom: none; }
+.updates .upd-time {
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+  min-width: 40px;
+}
+.updates li:first-child .upd-msg { color: var(--tan-deep); font-weight: 600; }
+.updates .none { color: var(--ink-soft); font-size: 13px; border: none; }
+
 /* ---------- scrollbars ---------- */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: var(--tan); border-radius: 999px; border: 2px solid var(--card); }

@@ -17,4 +17,5 @@ contextBridge.exposeInMainWorld('deck', {
   deleteConfig: (name) => ipcRenderer.invoke('delete-config', name),
   autosave: (data) => ipcRenderer.invoke('autosave', data),
   autosaveLoad: () => ipcRenderer.invoke('autosave-load'),
+  openExternal: (url) => ipcRenderer.invoke('open-external', url),
 })

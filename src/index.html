@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' file: data:; media-src 'self' file:; font-src 'self' file: https://fonts.gstatic.com; script-src 'self' file:" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' file: data:; media-src 'self' file:; font-src 'self' file: https://fonts.gstatic.com; script-src 'self' file:; connect-src 'self' file: https://ashtec.dino.icu" />
     <title>AshTec Audio Deck</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -17,6 +17,7 @@
           </div>
         </div>
         <div class="topbar-right">
+          <button id="open-hub" class="btn btn-ghost" title="Open the CrewHub">🌐 CrewHub</button>
           <label class="autoplay">
             <input type="checkbox" id="autoplay" />
             <span>Auto-play next</span>
@@ -50,6 +51,13 @@
               <button id="btn-start" class="btn btn-big btn-amber">▶ Start</button>
               <button id="btn-skip" class="btn btn-big btn-ghost">⏭ Skip</button>
             </div>
+            <div id="control-req" class="control-req" hidden>
+              <span id="control-msg">🎛 Admin requests control</span>
+              <span class="control-actions">
+                <button id="control-approve" class="btn btn-mini btn-amber">Approve</button>
+                <button id="control-deny" class="btn btn-mini danger">Deny</button>
+              </span>
+            </div>
           </div>
 
           <div class="panel">
@@ -66,6 +74,12 @@
             </div>
             <ul id="configs" class="configs"></ul>
             <p class="hint">Configs (queue + speakers + settings) are saved in <code>%APPDATA%\AshTec Audio Deck\configs</code>.</p>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head"><h2>Audio updates</h2></div>
+            <ul id="updates" class="updates"></ul>
+            <p class="hint">Shared live with the CrewHub admin <b>Audio Deck</b> tab.</p>
           </div>
         </section>
       </main>
