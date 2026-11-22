@@ -26,7 +26,7 @@ function createWindow() {
     height: 780,
     minWidth: 900,
     minHeight: 600,
-    backgroundColor: '#f3ece1',
+    backgroundColor: '#14120d',
     title: 'AshTec Audio Deck',
     autoHideMenuBar: true,
     webPreferences: {

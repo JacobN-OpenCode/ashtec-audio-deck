@@ -13,7 +13,7 @@ Themed from [ashtec.dino.icu](https://ashtec.dino.icu/).
 **Windows**
 
 1. Go to **[Releases](../../releases)** and download
-   **`AshTec-Audio-Deck-1.0.0.exe`**
+   **`AshTec-Audio-Deck-*.exe`**
 2. Double-click it. That's it — one file, no installer, nothing else to do.
 
 > Windows 10/11 (64-bit). It runs from wherever you keep it (USB stick fine).
@@ -22,7 +22,7 @@ Themed from [ashtec.dino.icu](https://ashtec.dino.icu/).
 **macOS**
 
 1. Go to **[Releases](../../releases)** and download
-   **`AshTec-Audio-Deck-1.0.0.dmg`**
+   **`AshTec-Audio-Deck-*.dmg`**
 2. Open it and **drag the app onto Applications**.
 3. First time only: **right-click the app → Open → Open** (it's unsigned, so
    macOS asks once).
